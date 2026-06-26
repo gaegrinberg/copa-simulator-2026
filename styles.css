@@ -109,7 +109,7 @@ tr:hover td { background: var(--bg-2); }
 /* ============== Grupos ============== */
 .groups-grid {
   display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
 }
 .group-card {
   background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px;
@@ -120,10 +120,13 @@ tr:hover td { background: var(--bg-2); }
   display: flex; justify-content: space-between;
 }
 .group-card h3 .stat { color: var(--text-dim); font-weight: 400; font-size: 11px; }
-.group-card table { font-size: 12px; }
-.group-card th, .group-card td { padding: 4px 6px; }
-.group-card .col-team { font-weight: 500; }
-.group-card .pp { display: flex; gap: 4px; height: 18px; align-items: center; }
+.group-card table { font-size: 12px; table-layout: fixed; width: 100%; }
+.group-card th, .group-card td { padding: 4px 4px; }
+.group-card th:first-child, .group-card td:first-child { width: 22px; padding-left: 0; padding-right: 2px; }
+.group-card th.num, .group-card td.num { width: 20px; padding-left: 2px; padding-right: 2px; }
+.group-card .th-prob, .group-card .td-prob { width: 100px; padding-left: 6px; padding-right: 0; }
+.group-card .col-team { font-weight: 500; overflow: hidden; white-space: normal; word-wrap: break-word; }
+.group-card .pp { display: flex; gap: 3px; height: 16px; align-items: center; width: 100%; }
 .group-card .pp-seg { height: 100%; }
 .group-card .pp-1 { background: rgba(63, 185, 80, 0.7); }
 .group-card .pp-2 { background: rgba(88, 166, 255, 0.6); }

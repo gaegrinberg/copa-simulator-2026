@@ -64,7 +64,7 @@
               <th class="num">GC</th>
               <th class="num">SG</th>
               <th class="num">Pts</th>
-              ${stats ? '<th style="min-width:130px;">Posição final</th>' : ''}
+              ${stats ? '<th class="th-prob">Posição final</th>' : ''}
             </tr>
           </thead>
           <tbody>
@@ -104,7 +104,7 @@
   function renderPosBar(probs) {
     const widths = [probs[1], probs[2], probs[3], probs[4]].map(p => (p * 100).toFixed(1));
     return `
-      <td>
+      <td class="td-prob">
         <div class="pp" title="1º:${pct(probs[1])} · 2º:${pct(probs[2])} · 3º:${pct(probs[3])} · 4º:${pct(probs[4])}">
           ${widths.map((w, i) => `<div class="pp-seg pp-${i+1}" style="width:${w}%"></div>`).join("")}
         </div>
