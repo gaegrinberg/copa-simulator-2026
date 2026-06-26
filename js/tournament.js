@@ -12,17 +12,19 @@
   // ---------------------------------------------------------------------------
   // 1. Classificação dentro de um grupo
   // ---------------------------------------------------------------------------
-  // Critérios FIFA 2026 (em ordem):
+  // Critérios FIFA Copa 2026 (em ordem) — diferente de Copas anteriores:
   //   1. Pontos (V=3, E=1, D=0)
-  //   2. Saldo de gols geral
-  //   3. Gols pró geral
-  //   4. Pontos no confronto direto entre os empatados
-  //   5. Saldo de gols no confronto direto
-  //   6. Gols pró no confronto direto
+  //   2. Pontos no confronto direto entre os empatados
+  //   3. Saldo de gols no confronto direto
+  //   4. Gols pró no confronto direto
+  //   5. Saldo de gols geral
+  //   6. Gols pró geral
   //   7. Fair play (pulado — sem dados)
   //   8. Sorteio (rng)
   //
-  // Os critérios 4-6 só se aplicam DENTRO do subconjunto de times empatados nos critérios 1-3.
+  // Os critérios 2-4 são recursivos: se 3 times empatam em pontos e o h2h separa 1,
+  // os 2 restantes têm a mini-tabela recomputada (só o jogo entre eles) antes de
+  // cair para os critérios gerais.
 
   function teamStatsFromMatches(teamCode, matches) {
     let played = 0, wins = 0, draws = 0, losses = 0, gf = 0, ga = 0;
@@ -57,44 +59,65 @@
     return table;
   }
 
-  // Resolve empates aplicando recursivamente os critérios.
-  function sortGroup(teams, matches, rng) {
-    // teams: array de stats já computadas (com pontos, gd, gf, gols)
-    // Ordena por 1-3 (pontos, gd, gf). Depois, dentro de cada empate, aplica h2h e sorteio.
+  // Resolve empates conforme regra FIFA Copa 2026:
+  //   - Primeiro agrupa por pontos.
+  //   - Dentro de cada grupo de empatados, aplica mini-tabela (h2h pts > h2h gd > h2h gf).
+  //   - Se um subconjunto permanecer empatado após h2h, RECOMPUTA a mini-tabela só
+  //     entre os que ainda estão empatados (esse é o ponto sutil da regra: o jogo contra
+  //     um time já separado não conta mais).
+  //   - Se o subconjunto não diminuir após h2h, cai para saldo geral > gols pró geral > sorteio.
+  function resolveTied(tied, matches, rng) {
+    if (tied.length === 1) return tied;
 
-    // Passo A: ordena por pontos > gd > gf
-    const sorted = teams.slice().sort((x, y) => {
-      if (y.points !== x.points) return y.points - x.points;
-      if (y.gd !== x.gd) return y.gd - x.gd;
-      if (y.gf !== x.gf) return y.gf - x.gf;
+    const mini = miniTable(tied.map(t => t.team), matches);
+
+    const sorted = tied.slice().sort((x, y) => {
+      const mx = mini[x.team], my = mini[y.team];
+      if (my.points !== mx.points) return my.points - mx.points;
+      if (my.gd !== mx.gd) return my.gd - mx.gd;
+      if (my.gf !== mx.gf) return my.gf - mx.gf;
       return 0;
     });
 
-    // Passo B: identifica grupos de times empatados em (pontos, gd, gf) e desempata
-    const result = [];
+    const out = [];
     let i = 0;
     while (i < sorted.length) {
       let j = i;
-      while (j < sorted.length
-        && sorted[j].points === sorted[i].points
-        && sorted[j].gd === sorted[i].gd
-        && sorted[j].gf === sorted[i].gf) j++;
-
-      const tied = sorted.slice(i, j);
-      if (tied.length === 1) {
-        result.push(tied[0]);
-      } else {
-        // Resolve via mini-tabela (h2h points > h2h gd > h2h gf > random)
-        const mini = miniTable(tied.map(t => t.team), matches);
-        const resolved = tied.slice().sort((x, y) => {
-          const mx = mini[x.team], my = mini[y.team];
-          if (my.points !== mx.points) return my.points - mx.points;
-          if (my.gd !== mx.gd) return my.gd - mx.gd;
-          if (my.gf !== mx.gf) return my.gf - mx.gf;
-          return rng() < 0.5 ? 1 : -1; // sorteio
-        });
-        for (const t of resolved) result.push(t);
+      const mi = mini[sorted[i].team];
+      while (j < sorted.length) {
+        const mj = mini[sorted[j].team];
+        if (mj.points !== mi.points || mj.gd !== mi.gd || mj.gf !== mi.gf) break;
+        j++;
       }
+      const still = sorted.slice(i, j);
+      if (still.length === 1) {
+        out.push(still[0]);
+      } else if (still.length < tied.length) {
+        // Subconjunto menor → recursa para recomputar a mini-tabela só entre eles
+        for (const t of resolveTied(still, matches, rng)) out.push(t);
+      } else {
+        // h2h não separou ninguém → cai para saldo geral > gols pró geral > sorteio
+        const last = still.slice().sort((x, y) => {
+          if (y.gd !== x.gd) return y.gd - x.gd;
+          if (y.gf !== x.gf) return y.gf - x.gf;
+          return rng() < 0.5 ? 1 : -1;
+        });
+        for (const t of last) out.push(t);
+      }
+      i = j;
+    }
+    return out;
+  }
+
+  function sortGroup(teams, matches, rng) {
+    const byPoints = teams.slice().sort((x, y) => y.points - x.points);
+    const result = [];
+    let i = 0;
+    while (i < byPoints.length) {
+      let j = i;
+      while (j < byPoints.length && byPoints[j].points === byPoints[i].points) j++;
+      const tied = byPoints.slice(i, j);
+      for (const t of resolveTied(tied, matches, rng)) result.push(t);
       i = j;
     }
     return result;

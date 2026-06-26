@@ -1,7 +1,7 @@
 // worker.js — Web Worker que roda o Monte Carlo em thread separada.
 // Recebe { type: "run", N, state, seed } e devolve progresso + resultado.
 
-importScripts("tournament.js?v=10", "model.js?v=10", "elo.js?v=10", "simulator.js?v=10");
+importScripts("tournament.js?v=14", "model.js?v=14", "elo.js?v=14", "simulator.js?v=14");
 
 self.onmessage = function (e) {
   const msg = e.data;

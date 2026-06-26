@@ -85,7 +85,7 @@
 
   function setupWorker() {
     try {
-      App.worker = new Worker("js/worker.js?v=11");
+      App.worker = new Worker("js/worker.js?v=14");
       App.worker.onmessage = (e) => {
         const msg = e.data;
         if (msg.type === "progress") onProgress(msg.done, msg.total);
