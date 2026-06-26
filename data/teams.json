@@ -1,0 +1,496 @@
+{
+  "meta": {
+    "tournament": "FIFA World Cup 2026",
+    "hosts": [
+      "USA",
+      "CAN",
+      "MEX"
+    ],
+    "elo_snapshot_date": "2026-06-26",
+    "elo_scale": "eloratings.net (World Football Elo Ratings). Snapshot 25/06/2026 — já incorpora todos os jogos da Copa disputados até esta data. Como o simulador parte deste estado, ele NÃO deve aplicar atualização de Elo para os jogos com played:true (essas variações já estão refletidas aqui).",
+    "notes": "Field elo_source = 'observed' para valores extraídos do eloratings.net (capturas do usuário 25/06/2026); 'estimated' para Qatar e Curaçao, que não apareceram nas capturas (provavelmente rank 88+). Refinar quando o usuário tiver acesso ao valor exato.",
+    "snapshot_notes": "Snapshot apos 3a rodada dos grupos D, E, F (25/06)."
+  },
+  "teams": [
+    {
+      "code": "ARG",
+      "name_en": "Argentina",
+      "name_pt": "Argentina",
+      "confederation": "CONMEBOL",
+      "group": "J",
+      "pot": 1,
+      "elo_initial": 2144,
+      "elo_source": "observed"
+    },
+    {
+      "code": "ESP",
+      "name_en": "Spain",
+      "name_pt": "Espanha",
+      "confederation": "UEFA",
+      "group": "H",
+      "pot": 1,
+      "elo_initial": 2134,
+      "elo_source": "observed"
+    },
+    {
+      "code": "FRA",
+      "name_en": "France",
+      "name_pt": "França",
+      "confederation": "UEFA",
+      "group": "I",
+      "pot": 1,
+      "elo_initial": 2090,
+      "elo_source": "observed"
+    },
+    {
+      "code": "ENG",
+      "name_en": "England",
+      "name_pt": "Inglaterra",
+      "confederation": "UEFA",
+      "group": "L",
+      "pot": 1,
+      "elo_initial": 2028,
+      "elo_source": "observed"
+    },
+    {
+      "code": "BRA",
+      "name_en": "Brazil",
+      "name_pt": "Brasil",
+      "confederation": "CONMEBOL",
+      "group": "C",
+      "pot": 1,
+      "elo_initial": 2009,
+      "elo_source": "observed"
+    },
+    {
+      "code": "COL",
+      "name_en": "Colombia",
+      "name_pt": "Colômbia",
+      "confederation": "CONMEBOL",
+      "group": "K",
+      "pot": 1,
+      "elo_initial": 2006,
+      "elo_source": "observed"
+    },
+    {
+      "code": "POR",
+      "name_en": "Portugal",
+      "name_pt": "Portugal",
+      "confederation": "UEFA",
+      "group": "K",
+      "pot": 1,
+      "elo_initial": 1988,
+      "elo_source": "observed"
+    },
+    {
+      "code": "NED",
+      "name_en": "Netherlands",
+      "name_pt": "Holanda",
+      "confederation": "UEFA",
+      "group": "F",
+      "pot": 1,
+      "elo_initial": 1980,
+      "elo_source": "observed"
+    },
+    {
+      "code": "GER",
+      "name_en": "Germany",
+      "name_pt": "Alemanha",
+      "confederation": "UEFA",
+      "group": "E",
+      "pot": 1,
+      "elo_initial": 1916,
+      "elo_source": "observed"
+    },
+    {
+      "code": "NOR",
+      "name_en": "Norway",
+      "name_pt": "Noruega",
+      "confederation": "UEFA",
+      "group": "I",
+      "pot": 2,
+      "elo_initial": 1951,
+      "elo_source": "observed"
+    },
+    {
+      "code": "JPN",
+      "name_en": "Japan",
+      "name_pt": "Japão",
+      "confederation": "AFC",
+      "group": "F",
+      "pot": 2,
+      "elo_initial": 1910,
+      "elo_source": "observed"
+    },
+    {
+      "code": "SUI",
+      "name_en": "Switzerland",
+      "name_pt": "Suíça",
+      "confederation": "UEFA",
+      "group": "B",
+      "pot": 2,
+      "elo_initial": 1914,
+      "elo_source": "observed"
+    },
+    {
+      "code": "MEX",
+      "name_en": "Mexico",
+      "name_pt": "México",
+      "confederation": "CONCACAF",
+      "group": "A",
+      "pot": 1,
+      "elo_initial": 1912,
+      "elo_source": "observed"
+    },
+    {
+      "code": "CRO",
+      "name_en": "Croatia",
+      "name_pt": "Croácia",
+      "confederation": "UEFA",
+      "group": "L",
+      "pot": 2,
+      "elo_initial": 1896,
+      "elo_source": "observed"
+    },
+    {
+      "code": "MAR",
+      "name_en": "Morocco",
+      "name_pt": "Marrocos",
+      "confederation": "CAF",
+      "group": "C",
+      "pot": 2,
+      "elo_initial": 1877,
+      "elo_source": "observed"
+    },
+    {
+      "code": "BEL",
+      "name_en": "Belgium",
+      "name_pt": "Bélgica",
+      "confederation": "UEFA",
+      "group": "G",
+      "pot": 2,
+      "elo_initial": 1869,
+      "elo_source": "observed"
+    },
+    {
+      "code": "ECU",
+      "name_en": "Ecuador",
+      "name_pt": "Equador",
+      "confederation": "CONMEBOL",
+      "group": "E",
+      "pot": 2,
+      "elo_initial": 1902,
+      "elo_source": "observed"
+    },
+    {
+      "code": "URU",
+      "name_en": "Uruguay",
+      "name_pt": "Uruguai",
+      "confederation": "CONMEBOL",
+      "group": "H",
+      "pot": 2,
+      "elo_initial": 1851,
+      "elo_source": "observed"
+    },
+    {
+      "code": "AUT",
+      "name_en": "Austria",
+      "name_pt": "Áustria",
+      "confederation": "UEFA",
+      "group": "J",
+      "pot": 2,
+      "elo_initial": 1841,
+      "elo_source": "observed"
+    },
+    {
+      "code": "USA",
+      "name_en": "United States",
+      "name_pt": "Estados Unidos",
+      "confederation": "CONCACAF",
+      "group": "D",
+      "pot": 1,
+      "elo_initial": 1789,
+      "elo_source": "observed"
+    },
+    {
+      "code": "SEN",
+      "name_en": "Senegal",
+      "name_pt": "Senegal",
+      "confederation": "CAF",
+      "group": "I",
+      "pot": 2,
+      "elo_initial": 1817,
+      "elo_source": "observed"
+    },
+    {
+      "code": "PAR",
+      "name_en": "Paraguay",
+      "name_pt": "Paraguai",
+      "confederation": "CONMEBOL",
+      "group": "D",
+      "pot": 3,
+      "elo_initial": 1815,
+      "elo_source": "observed"
+    },
+    {
+      "code": "TUR",
+      "name_en": "Turkey",
+      "name_pt": "Turquia",
+      "confederation": "UEFA",
+      "group": "D",
+      "pot": 2,
+      "elo_initial": 1844,
+      "elo_source": "observed"
+    },
+    {
+      "code": "AUS",
+      "name_en": "Australia",
+      "name_pt": "Austrália",
+      "confederation": "AFC",
+      "group": "D",
+      "pot": 3,
+      "elo_initial": 1800,
+      "elo_source": "observed"
+    },
+    {
+      "code": "ALG",
+      "name_en": "Algeria",
+      "name_pt": "Argélia",
+      "confederation": "CAF",
+      "group": "J",
+      "pot": 3,
+      "elo_initial": 1780,
+      "elo_source": "observed"
+    },
+    {
+      "code": "IRN",
+      "name_en": "Iran",
+      "name_pt": "Irã",
+      "confederation": "AFC",
+      "group": "G",
+      "pot": 3,
+      "elo_initial": 1766,
+      "elo_source": "observed"
+    },
+    {
+      "code": "CAN",
+      "name_en": "Canada",
+      "name_pt": "Canadá",
+      "confederation": "CONCACAF",
+      "group": "B",
+      "pot": 1,
+      "elo_initial": 1748,
+      "elo_source": "observed"
+    },
+    {
+      "code": "SCO",
+      "name_en": "Scotland",
+      "name_pt": "Escócia",
+      "confederation": "UEFA",
+      "group": "C",
+      "pot": 3,
+      "elo_initial": 1745,
+      "elo_source": "observed"
+    },
+    {
+      "code": "EGY",
+      "name_en": "Egypt",
+      "name_pt": "Egito",
+      "confederation": "CAF",
+      "group": "G",
+      "pot": 2,
+      "elo_initial": 1740,
+      "elo_source": "observed"
+    },
+    {
+      "code": "CIV",
+      "name_en": "Ivory Coast",
+      "name_pt": "Costa do Marfim",
+      "confederation": "CAF",
+      "group": "E",
+      "pot": 2,
+      "elo_initial": 1742,
+      "elo_source": "observed"
+    },
+    {
+      "code": "SWE",
+      "name_en": "Sweden",
+      "name_pt": "Suécia",
+      "confederation": "UEFA",
+      "group": "F",
+      "pot": 3,
+      "elo_initial": 1742,
+      "elo_source": "observed"
+    },
+    {
+      "code": "KOR",
+      "name_en": "South Korea",
+      "name_pt": "Coreia do Sul",
+      "confederation": "AFC",
+      "group": "A",
+      "pot": 2,
+      "elo_initial": 1723,
+      "elo_source": "observed"
+    },
+    {
+      "code": "CZE",
+      "name_en": "Czech Republic",
+      "name_pt": "Tchéquia",
+      "confederation": "UEFA",
+      "group": "A",
+      "pot": 3,
+      "elo_initial": 1680,
+      "elo_source": "observed"
+    },
+    {
+      "code": "UZB",
+      "name_en": "Uzbekistan",
+      "name_pt": "Uzbequistão",
+      "confederation": "AFC",
+      "group": "K",
+      "pot": 3,
+      "elo_initial": 1677,
+      "elo_source": "observed"
+    },
+    {
+      "code": "PAN",
+      "name_en": "Panama",
+      "name_pt": "Panamá",
+      "confederation": "CONCACAF",
+      "group": "L",
+      "pot": 4,
+      "elo_initial": 1668,
+      "elo_source": "observed"
+    },
+    {
+      "code": "COD",
+      "name_en": "DR Congo",
+      "name_pt": "Congo (RD)",
+      "confederation": "CAF",
+      "group": "K",
+      "pot": 3,
+      "elo_initial": 1666,
+      "elo_source": "observed"
+    },
+    {
+      "code": "JOR",
+      "name_en": "Jordan",
+      "name_pt": "Jordânia",
+      "confederation": "AFC",
+      "group": "J",
+      "pot": 4,
+      "elo_initial": 1632,
+      "elo_source": "observed"
+    },
+    {
+      "code": "CPV",
+      "name_en": "Cape Verde",
+      "name_pt": "Cabo Verde",
+      "confederation": "CAF",
+      "group": "H",
+      "pot": 3,
+      "elo_initial": 1625,
+      "elo_source": "observed"
+    },
+    {
+      "code": "BIH",
+      "name_en": "Bosnia and Herzegovina",
+      "name_pt": "Bósnia e Herzegovina",
+      "confederation": "UEFA",
+      "group": "B",
+      "pot": 3,
+      "elo_initial": 1622,
+      "elo_source": "observed"
+    },
+    {
+      "code": "KSA",
+      "name_en": "Saudi Arabia",
+      "name_pt": "Arábia Saudita",
+      "confederation": "AFC",
+      "group": "H",
+      "pot": 4,
+      "elo_initial": 1593,
+      "elo_source": "observed"
+    },
+    {
+      "code": "IRQ",
+      "name_en": "Iraq",
+      "name_pt": "Iraque",
+      "confederation": "AFC",
+      "group": "I",
+      "pot": 4,
+      "elo_initial": 1586,
+      "elo_source": "observed"
+    },
+    {
+      "code": "GHA",
+      "name_en": "Ghana",
+      "name_pt": "Gana",
+      "confederation": "CAF",
+      "group": "L",
+      "pot": 3,
+      "elo_initial": 1584,
+      "elo_source": "observed"
+    },
+    {
+      "code": "RSA",
+      "name_en": "South Africa",
+      "name_pt": "África do Sul",
+      "confederation": "CAF",
+      "group": "A",
+      "pot": 4,
+      "elo_initial": 1575,
+      "elo_source": "observed"
+    },
+    {
+      "code": "TUN",
+      "name_en": "Tunisia",
+      "name_pt": "Tunísia",
+      "confederation": "CAF",
+      "group": "F",
+      "pot": 4,
+      "elo_initial": 1562,
+      "elo_source": "observed"
+    },
+    {
+      "code": "NZL",
+      "name_en": "New Zealand",
+      "name_pt": "Nova Zelândia",
+      "confederation": "OFC",
+      "group": "G",
+      "pot": 4,
+      "elo_initial": 1549,
+      "elo_source": "observed"
+    },
+    {
+      "code": "HAI",
+      "name_en": "Haiti",
+      "name_pt": "Haiti",
+      "confederation": "CONCACAF",
+      "group": "C",
+      "pot": 4,
+      "elo_initial": 1517,
+      "elo_source": "observed"
+    },
+    {
+      "code": "QAT",
+      "name_en": "Qatar",
+      "name_pt": "Catar",
+      "confederation": "AFC",
+      "group": "B",
+      "pot": 4,
+      "elo_initial": 1450,
+      "elo_source": "estimated"
+    },
+    {
+      "code": "CUW",
+      "name_en": "Curaçao",
+      "name_pt": "Curaçao",
+      "confederation": "CONCACAF",
+      "group": "E",
+      "pot": 4,
+      "elo_initial": 1416,
+      "elo_source": "estimated"
+    }
+  ]
+}

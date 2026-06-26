@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copa do Mundo 2026 — Simulador</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Copa 2026</h1>
+    <span class="subtitle">Simulador Monte Carlo · Dixon-Coles · Elo</span>
+  </div>
+  <div class="controls">
+    <label>Simulações
+      <select id="n-sims">
+        <option value="1000">1.000</option>
+        <option value="5000">5.000</option>
+        <option value="10000" selected>10.000</option>
+        <option value="25000">25.000</option>
+        <option value="50000">50.000</option>
+      </select>
+    </label>
+    <button id="run-sim">Simular</button>
+    <div id="progress-wrap"><div id="progress-bar"></div><span id="progress-text"></span></div>
+  </div>
+</header>
+
+<div id="scenario-banner" hidden></div>
+
+<nav role="tablist" aria-label="Abas do simulador">
+  <button class="tab active" role="tab" id="navtab-overview" aria-controls="tab-overview" aria-selected="true" tabindex="0" data-tab="overview">Visão geral</button>
+  <button class="tab" role="tab" id="navtab-groups" aria-controls="tab-groups" aria-selected="false" tabindex="-1" data-tab="groups">Fase de grupos</button>
+  <button class="tab" role="tab" id="navtab-bracket" aria-controls="tab-bracket" aria-selected="false" tabindex="-1" data-tab="bracket">Mata-mata</button>
+  <button class="tab" role="tab" id="navtab-team" aria-controls="tab-team" aria-selected="false" tabindex="-1" data-tab="team">Por seleção</button>
+  <button class="tab" role="tab" id="navtab-manual" aria-controls="tab-manual" aria-selected="false" tabindex="-1" data-tab="manual">Simulação manual</button>
+</nav>
+
+<main>
+  <section id="tab-overview" class="tab-content active" role="tabpanel" aria-labelledby="navtab-overview" tabindex="0"></section>
+  <section id="tab-groups" class="tab-content" role="tabpanel" aria-labelledby="navtab-groups" tabindex="0"></section>
+  <section id="tab-bracket" class="tab-content" role="tabpanel" aria-labelledby="navtab-bracket" tabindex="0"></section>
+  <section id="tab-team" class="tab-content" role="tabpanel" aria-labelledby="navtab-team" tabindex="0"></section>
+  <section id="tab-manual" class="tab-content" role="tabpanel" aria-labelledby="navtab-manual" tabindex="0"></section>
+</main>
+
+<footer>
+  <span id="data-info"></span>
+</footer>
+
+<script src="data/data.js?v=13"></script>
+<script src="js/tournament.js?v=13"></script>
+<script src="js/model.js?v=13"></script>
+<script src="js/elo.js?v=13"></script>
+<script src="js/simulator.js?v=13"></script>
+<script src="js/ui/flags.js?v=13"></script>
+<script src="js/ui/overview.js?v=13"></script>
+<script src="js/ui/groups.js?v=13"></script>
+<script src="js/ui/bracket.js?v=13"></script>
+<script src="js/ui/team.js?v=13"></script>
+<script src="js/ui/manual.js?v=13"></script>
+<script src="js/main.js?v=13"></script>
+</body>
+</html>

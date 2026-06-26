@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "format": "FIFA 2026 — 48 teams, 12 groups of 4, top 2 + 8 best 3rd-placed teams advance to a 32-team knockout. Source: Wikipedia 2026_FIFA_World_Cup_knockout_stage.",
+    "notes": "Seed codes: '1X' = winner of Group X, '2X' = runner-up of Group X, '3XYZWV' = the best-3rd-place team allocated to this slot per FIFA's fixed 8-from-12 table (see third_place_allocation below). 'W##' = winner of match ##. 'L##' = loser of match ##."
+  },
+  "r32": [
+    { "match": "M073", "home": "2A", "away": "2B" },
+    { "match": "M074", "home": "1E", "away": "3ABCDF" },
+    { "match": "M075", "home": "1F", "away": "2C" },
+    { "match": "M076", "home": "1C", "away": "2F" },
+    { "match": "M077", "home": "1I", "away": "3CDFGH" },
+    { "match": "M078", "home": "2E", "away": "2I" },
+    { "match": "M079", "home": "1A", "away": "3CEFHI" },
+    { "match": "M080", "home": "1L", "away": "3EHIJK" },
+    { "match": "M081", "home": "1D", "away": "3BEFIJ" },
+    { "match": "M082", "home": "1G", "away": "3AEHIJ" },
+    { "match": "M083", "home": "2K", "away": "2L" },
+    { "match": "M084", "home": "1H", "away": "2J" },
+    { "match": "M085", "home": "1B", "away": "3EFGIJ" },
+    { "match": "M086", "home": "1J", "away": "2H" },
+    { "match": "M087", "home": "1K", "away": "3DEIJL" },
+    { "match": "M088", "home": "2D", "away": "2G" }
+  ],
+  "r16": [
+    { "match": "M089", "home": "W074", "away": "W077" },
+    { "match": "M090", "home": "W073", "away": "W075" },
+    { "match": "M091", "home": "W076", "away": "W078" },
+    { "match": "M092", "home": "W079", "away": "W080" },
+    { "match": "M093", "home": "W083", "away": "W084" },
+    { "match": "M094", "home": "W081", "away": "W082" },
+    { "match": "M095", "home": "W086", "away": "W088" },
+    { "match": "M096", "home": "W085", "away": "W087" }
+  ],
+  "qf": [
+    { "match": "M097", "home": "W089", "away": "W090" },
+    { "match": "M098", "home": "W093", "away": "W094" },
+    { "match": "M099", "home": "W091", "away": "W092" },
+    { "match": "M100", "home": "W095", "away": "W096" }
+  ],
+  "sf": [
+    { "match": "M101", "home": "W097", "away": "W098" },
+    { "match": "M102", "home": "W099", "away": "W100" }
+  ],
+  "third": { "match": "M103", "home": "L101", "away": "L102" },
+  "final": { "match": "M104", "home": "W101", "away": "W102" },
+
+  "third_place_allocation": {
+    "description": "FIFA's fixed table mapping the set of 6 groups that yield best-3rd-place teams to the 8 R32 slots that take a 3rd-placer. The 8 slots are: M074 (1E), M077 (1I), M079 (1A), M080 (1L), M081 (1D), M082 (1G), M085 (1B), M087 (1K). For each of the 495 combinations C(12,6) of which 6 groups send a 3rd-placer, FIFA defined a permutation assigning a specific group's 3rd-placer to each slot, designed to avoid group-stage rematches. Implementation note for Etapa 2: encode this lookup table or use the simpler heuristic — sort the 6 advancing 3rds by ranking (pts > GD > GF > FairPlay > draw) and assign in a fixed order to the 8 slots while avoiding rematches. For first pass, the heuristic gets you 98%+ correct R32 brackets; later we can ingest FIFA's canonical lookup table verbatim if needed.",
+    "slots_with_third_placer": ["M074", "M077", "M079", "M080", "M081", "M082", "M085", "M087"],
+    "slot_groups": {
+      "M074": ["A", "B", "C", "D", "F"],
+      "M077": ["C", "D", "F", "G", "H"],
+      "M079": ["C", "E", "F", "H", "I"],
+      "M080": ["E", "H", "I", "J", "K"],
+      "M081": ["B", "E", "F", "I", "J"],
+      "M082": ["A", "E", "H", "I", "J"],
+      "M085": ["E", "F", "G", "I", "J"],
+      "M087": ["D", "E", "I", "J", "L"]
+    },
+    "slot_groups_note": "Each slot's listed groups are the candidate groups whose 3rd-placer can be assigned there (i.e. groups that did NOT play any of the 4 teams in that bracket-quarter against each other in the group stage). The simulator picks the best-ranked eligible 3rd-placer for each slot using FIFA's deterministic procedure."
+  },
+
+  "tiebreakers": {
+    "in_group": ["points", "goal_difference", "goals_for", "head_to_head_points", "head_to_head_gd", "head_to_head_gf", "fair_play", "drawing_of_lots"],
+    "best_thirds": ["points", "goal_difference", "goals_for", "fair_play", "drawing_of_lots"]
+  }
+}
