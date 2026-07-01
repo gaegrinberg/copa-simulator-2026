@@ -503,20 +503,24 @@
       "stage": "group",
       "group": "G",
       "matchday": 3,
-      "date": "2026-06-26",
+      "date": "2026-06-27",
       "home": "EGY",
       "away": "IRN",
-      "played": false
+      "score_home": 1,
+      "score_away": 1,
+      "played": true
     },
     {
       "id": "M042",
       "stage": "group",
       "group": "G",
       "matchday": 3,
-      "date": "2026-06-26",
+      "date": "2026-06-27",
       "home": "NZL",
       "away": "BEL",
-      "played": false
+      "score_home": 1,
+      "score_away": 5,
+      "played": true
     },
     {
       "id": "M043",
@@ -574,7 +578,9 @@
       "date": "2026-06-26",
       "home": "CPV",
       "away": "KSA",
-      "played": false
+      "score_home": 0,
+      "score_away": 0,
+      "played": true
     },
     {
       "id": "M048",
@@ -584,7 +590,9 @@
       "date": "2026-06-26",
       "home": "URU",
       "away": "ESP",
-      "played": false
+      "score_home": 0,
+      "score_away": 1,
+      "played": true
     },
     {
       "id": "M049",
@@ -642,7 +650,9 @@
       "date": "2026-06-26",
       "home": "NOR",
       "away": "FRA",
-      "played": false
+      "score_home": 1,
+      "score_away": 4,
+      "played": true
     },
     {
       "id": "M054",
@@ -652,7 +662,9 @@
       "date": "2026-06-26",
       "home": "SEN",
       "away": "IRQ",
-      "played": false
+      "score_home": 5,
+      "score_away": 0,
+      "played": true
     },
     {
       "id": "M055",
@@ -710,7 +722,9 @@
       "date": "2026-06-27",
       "home": "ALG",
       "away": "AUT",
-      "played": false
+      "score_home": 3,
+      "score_away": 3,
+      "played": true
     },
     {
       "id": "M060",
@@ -720,7 +734,9 @@
       "date": "2026-06-27",
       "home": "JOR",
       "away": "ARG",
-      "played": false
+      "score_home": 1,
+      "score_away": 3,
+      "played": true
     },
     {
       "id": "M061",
@@ -778,7 +794,9 @@
       "date": "2026-06-27",
       "home": "COL",
       "away": "POR",
-      "played": false
+      "score_home": 0,
+      "score_away": 0,
+      "played": true
     },
     {
       "id": "M066",
@@ -788,7 +806,9 @@
       "date": "2026-06-27",
       "home": "COD",
       "away": "UZB",
-      "played": false
+      "score_home": 3,
+      "score_away": 1,
+      "played": true
     },
     {
       "id": "M067",
@@ -846,7 +866,9 @@
       "date": "2026-06-27",
       "home": "PAN",
       "away": "ENG",
-      "played": false
+      "score_home": 0,
+      "score_away": 2,
+      "played": true
     },
     {
       "id": "M072",
@@ -856,7 +878,9 @@
       "date": "2026-06-27",
       "home": "CRO",
       "away": "GHA",
-      "played": false
+      "score_home": 2,
+      "score_away": 1,
+      "played": true
     },
     {
       "id": "M073",
@@ -864,7 +888,9 @@
       "date": "2026-06-28",
       "home_seed": "2A",
       "away_seed": "2B",
-      "played": false
+      "score_home": 0,
+      "score_away": 1,
+      "played": true
     },
     {
       "id": "M074",
@@ -872,7 +898,10 @@
       "date": "2026-06-28",
       "home_seed": "1E",
       "away_seed": "3ABCDF",
-      "played": false
+      "score_home": 1,
+      "score_away": 1,
+      "ko_winner": "away",
+      "played": true
     },
     {
       "id": "M075",
@@ -880,7 +909,10 @@
       "date": "2026-06-29",
       "home_seed": "1F",
       "away_seed": "2C",
-      "played": false
+      "score_home": 1,
+      "score_away": 1,
+      "ko_winner": "away",
+      "played": true
     },
     {
       "id": "M076",
@@ -888,7 +920,9 @@
       "date": "2026-06-29",
       "home_seed": "1C",
       "away_seed": "2F",
-      "played": false
+      "score_home": 2,
+      "score_away": 1,
+      "played": true
     },
     {
       "id": "M077",
@@ -896,7 +930,9 @@
       "date": "2026-06-29",
       "home_seed": "1I",
       "away_seed": "3CDFGH",
-      "played": false
+      "score_home": 3,
+      "score_away": 0,
+      "played": true
     },
     {
       "id": "M078",
@@ -904,7 +940,9 @@
       "date": "2026-06-30",
       "home_seed": "2E",
       "away_seed": "2I",
-      "played": false
+      "score_home": 1,
+      "score_away": 2,
+      "played": true
     },
     {
       "id": "M079",
@@ -912,7 +950,9 @@
       "date": "2026-06-30",
       "home_seed": "1A",
       "away_seed": "3CEFHI",
-      "played": false
+      "score_home": 2,
+      "score_away": 0,
+      "played": true
     },
     {
       "id": "M080",

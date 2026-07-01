@@ -14,6 +14,7 @@
     activeTab: "overview",
     worker: null,
     workerOK: false,
+    runId: 0,                 // incrementa a cada run — descarta resultados stale
   };
 
   // ---------------------------------------------------------------------------
@@ -85,11 +86,14 @@
 
   function setupWorker() {
     try {
-      App.worker = new Worker("js/worker.js?v=14");
+      App.worker = new Worker("js/worker.js?v=19");
       App.worker.onmessage = (e) => {
         const msg = e.data;
-        if (msg.type === "progress") onProgress(msg.done, msg.total);
-        else if (msg.type === "result") onResult(msg.stats);
+        if (msg.type === "progress") {
+          // Só mostra progress do run atual (descarta mensagens antigas)
+          if (msg.runId === undefined || msg.runId === App.runId) onProgress(msg.done, msg.total);
+        }
+        else if (msg.type === "result") onResult(msg.stats, msg.runId);
       };
       App.worker.onerror = (err) => {
         console.warn("Worker falhou, vou rodar no main thread:", err);
@@ -105,8 +109,11 @@
 
   function renderInfo() {
     const m = window.APP_DATA.teams.meta;
+    const all = App.state.matches;
+    const groupPlayed = all.filter(x => x.played && x.stage === "group").length;
+    const koPlayed = all.filter(x => x.played && x.stage !== "group").length;
     document.getElementById("data-info").textContent =
-      `Elos: snapshot ${m.elo_snapshot_date} (eloratings.net) · ${App.state.teams.length} seleções, ${App.state.matches.length} jogos · jogos disputados: ${App.state.matches.filter(x => x.played).length}/72 (fase de grupos)`;
+      `Elos: snapshot ${m.elo_snapshot_date} (eloratings.net) · ${App.state.teams.length} seleções, ${all.length} jogos · grupos: ${groupPlayed}/72 · mata-mata jogados: ${koPlayed}`;
   }
 
   // ---------------------------------------------------------------------------
@@ -115,8 +122,15 @@
   function runSimulation(opts) {
     opts = opts || {};
     const mode = opts.mode || "baseline";
-    const overrides = mode === "scenario" ? App.overrides : null;
+
+    if (mode === "scenario" && Object.keys(App.overrides).length === 0) return;
+
+    // Snapshot dos overrides no momento do click — evita race se usuário
+    // editar campos enquanto a simulação roda.
+    const overrides = mode === "scenario" ? JSON.parse(JSON.stringify(App.overrides)) : null;
     App.pendingMode = mode;
+    App.runId++;
+    const myRunId = App.runId;
 
     const N = parseInt(document.getElementById("n-sims").value, 10);
     const btn = document.getElementById("run-sim");
@@ -125,7 +139,6 @@
     document.getElementById("progress-wrap").classList.add("active");
     onProgress(0, N);
 
-    // Desabilita botão da aba manual também enquanto roda
     const manualBtn = document.getElementById("manual-run");
     if (manualBtn) { manualBtn.disabled = true; manualBtn.textContent = "Simulando..."; }
 
@@ -140,13 +153,13 @@
     }
 
     if (App.workerOK && App.worker) {
-      App.worker.postMessage({ type: "run", N, state: App.state, seed, overrides });
+      App.worker.postMessage({ type: "run", N, state: App.state, seed, overrides, runId: myRunId });
     } else {
-      runMainThread(N, overrides, seed);
+      runMainThread(N, overrides, seed, myRunId);
     }
   }
 
-  function runMainThread(N, overrides, seed) {
+  function runMainThread(N, overrides, seed, myRunId) {
     // Roda em chunks de 200 sims pra atualizar progresso sem travar.
     const CHUNK = 200;
     const rng = Simulator.mulberry32(seed);
@@ -158,6 +171,7 @@
 
     let i = 0;
     function chunk() {
+      if (myRunId !== App.runId) return; // run substituído — aborta
       const end = Math.min(i + CHUNK, N);
       for (; i < end; i++) {
         const sim = Simulator.runOne(App.state, rng, overrides);
@@ -212,7 +226,7 @@
             avgGroupPts: t.groupPts / N, avgGroupGF: t.groupGF / N, avgGroupGA: t.groupGA / N,
           };
         }
-        onResult(stats);
+        onResult(stats, myRunId);
       }
     }
     chunk();
@@ -224,7 +238,10 @@
     document.getElementById("progress-text").textContent = `${done.toLocaleString()} / ${total.toLocaleString()}`;
   }
 
-  function onResult(stats) {
+  function onResult(stats, runId) {
+    // Descarta resultado stale: outro run foi iniciado depois deste.
+    if (runId !== undefined && runId !== App.runId) return;
+
     if (App.pendingMode === "scenario") {
       App.scenarioStats = stats;
     } else {

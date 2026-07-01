@@ -113,6 +113,37 @@
     const groupOf = {};
     for (const t of teams) groupOf[t.code] = t.group;
 
+    // Mapa: matchId → matchDef (para lookup de played e scores em jogos do mata-mata)
+    const matchById = {};
+    for (const m of matches) matchById[m.id] = m;
+
+    // Tenta resolver o resultado de um jogo de mata-mata a partir de played:true em
+    // matches.json ou de override manual. Devolve null se precisa simular.
+    function resolveKO(m) {
+      const matchDef = matchById[m.id];
+      let src = null;
+      if (matchDef && matchDef.played && typeof matchDef.score_home === "number" && typeof matchDef.score_away === "number") {
+        src = matchDef;
+      } else {
+        const ov = overrides[m.id];
+        if (ov && typeof ov.score_home === "number" && typeof ov.score_away === "number") {
+          src = ov;
+        }
+      }
+      if (!src) return null;
+      const sh = src.score_home, sa = src.score_away;
+      let winner, loser, decided = "ft";
+      if (sh > sa) { winner = m.home; loser = m.away; }
+      else if (sa > sh) { winner = m.away; loser = m.home; }
+      else {
+        // Empate em 90' fixado: se ko_winner não veio, default = casa
+        winner = src.ko_winner === "away" ? m.away : m.home;
+        loser = winner === m.home ? m.away : m.home;
+        decided = "pens";
+      }
+      return { scoreHome: sh, scoreAway: sa, etHome: 0, etAway: 0, decided, winner, loser };
+    }
+
     // === Fase de grupos ===
     // Construímos uma cópia dos jogos onde os não-played são simulados.
     // Ordenamos por data pra que a evolução do Elo seja realista.
@@ -192,82 +223,52 @@
     // === Mata-mata ===
     const knockoutResults = {};
 
-    function simulateAndRecord(matchList, nextStage) {
+    function runKO(matchList, stageHandler) {
       for (const m of matchList) {
-        const opts = { stage: "ko", homeCode: m.home, awayCode: m.away, knockout: true };
-        const sim = Model.simulateMatch(elos[m.home], elos[m.away], opts, rng);
+        let scoreHome, scoreAway, etHome = 0, etAway = 0, decided, winner;
+        const resolved = resolveKO(m);
+        if (resolved) {
+          ({ scoreHome, scoreAway, etHome, etAway, decided, winner } = resolved);
+        } else {
+          const opts = { stage: "ko", homeCode: m.home, awayCode: m.away, knockout: true };
+          const sim = Model.simulateMatch(elos[m.home], elos[m.away], opts, rng);
+          scoreHome = sim.scoreHome; scoreAway = sim.scoreAway;
+          etHome = sim.etHome || 0; etAway = sim.etAway || 0;
+          decided = sim.decided; winner = sim.winner;
+        }
         const upd = Elo.applyMatch(elos[m.home], elos[m.away], {
-          scoreHome: sim.scoreHome,
-          scoreAway: sim.scoreAway,
-          etHome: sim.etHome,
-          etAway: sim.etAway,
-          decided: sim.decided,
+          scoreHome, scoreAway, etHome, etAway, decided,
         });
         elos[m.home] = upd.newHome;
         elos[m.away] = upd.newAway;
-        const winner = sim.winner;
         const loser = winner === m.home ? m.away : m.home;
-        knockoutResults[m.id] = { winner, loser, sim };
-        if (nextStage) stageReached[winner] = nextStage;
+        const simObj = { home: m.home, away: m.away, scoreHome, scoreAway, etHome, etAway, decided, winner };
+        knockoutResults[m.id] = { winner, loser, sim: simObj };
+        if (stageHandler) stageHandler(winner, loser);
       }
     }
 
     const r32 = Tournament.buildR32Matchups(standings, thirdsMapping, bracket);
-    simulateAndRecord(r32, "r16");
+    runKO(r32, (w) => { stageReached[w] = "r16"; });
 
     const ctx = { standings, thirdsMapping, knockoutResults };
     const r16 = Tournament.buildR16Matchups(ctx, bracket);
-    simulateAndRecord(r16, "qf");
+    runKO(r16, (w) => { stageReached[w] = "qf"; });
 
     const qf = Tournament.buildQFMatchups(ctx, bracket);
-    simulateAndRecord(qf, "sf");
+    runKO(qf, (w) => { stageReached[w] = "sf"; });
 
     const sf = Tournament.buildSFMatchups(ctx, bracket);
-    // SF: vencedor vai à final, perdedor vai pra disputa de 3º. Marca ambos com seu estágio máximo.
-    for (const m of sf) {
-      const opts = { stage: "ko", homeCode: m.home, awayCode: m.away, knockout: true };
-      const sim = Model.simulateMatch(elos[m.home], elos[m.away], opts, rng);
-      const upd = Elo.applyMatch(elos[m.home], elos[m.away], {
-        scoreHome: sim.scoreHome, scoreAway: sim.scoreAway,
-        etHome: sim.etHome, etAway: sim.etAway, decided: sim.decided,
-      });
-      elos[m.home] = upd.newHome;
-      elos[m.away] = upd.newAway;
-      const winner = sim.winner;
-      const loser = winner === m.home ? m.away : m.home;
-      knockoutResults[m.id] = { winner, loser, sim };
-      stageReached[winner] = "final";  // vai disputar a final
-      stageReached[loser] = "sf";      // chega às semis (e disputa 3º lugar)
-    }
+    // SF: vencedor vai à final, perdedor disputa 3º. Marca ambos com seu estágio máximo.
+    runKO(sf, (w, l) => { stageReached[w] = "final"; stageReached[l] = "sf"; });
 
-    // Disputa de 3º lugar (não muda stage máximo dos perdedores, mas registramos resultado)
+    // Disputa de 3º lugar (não muda stage máximo, mas registra resultado)
     const third = Tournament.buildThirdPlace(ctx, bracket);
-    for (const m of third) {
-      const opts = { stage: "ko", homeCode: m.home, awayCode: m.away, knockout: true };
-      const sim = Model.simulateMatch(elos[m.home], elos[m.away], opts, rng);
-      const upd = Elo.applyMatch(elos[m.home], elos[m.away], {
-        scoreHome: sim.scoreHome, scoreAway: sim.scoreAway,
-        etHome: sim.etHome, etAway: sim.etAway, decided: sim.decided,
-      });
-      elos[m.home] = upd.newHome;
-      elos[m.away] = upd.newAway;
-      knockoutResults[m.id] = { winner: sim.winner, loser: sim.winner === m.home ? m.away : m.home, sim };
-    }
+    runKO(third, null);
 
     // Final
     const finalArr = Tournament.buildFinal(ctx, bracket);
-    for (const m of finalArr) {
-      const opts = { stage: "ko", homeCode: m.home, awayCode: m.away, knockout: true };
-      const sim = Model.simulateMatch(elos[m.home], elos[m.away], opts, rng);
-      const upd = Elo.applyMatch(elos[m.home], elos[m.away], {
-        scoreHome: sim.scoreHome, scoreAway: sim.scoreAway,
-        etHome: sim.etHome, etAway: sim.etAway, decided: sim.decided,
-      });
-      elos[m.home] = upd.newHome;
-      elos[m.away] = upd.newAway;
-      knockoutResults[m.id] = { winner: sim.winner, loser: sim.winner === m.home ? m.away : m.home, sim };
-      stageReached[sim.winner] = "champion";
-    }
+    runKO(finalArr, (w) => { stageReached[w] = "champion"; });
 
     return {
       stageReached,

@@ -235,6 +235,49 @@ table.manual-matches .cell-score .x { color: var(--text-dim); margin: 0 4px; fon
 table.manual-matches .cell-action { width: 32px; text-align: center; }
 table.manual-matches tr.locked { background: rgba(63, 185, 80, 0.07); }
 table.manual-matches tr.locked .cell-team { color: var(--accent); }
+table.manual-matches tr.real-played { background: rgba(122, 162, 247, 0.06); }
+table.manual-matches tr.real-played .cell-team { color: var(--text-dim); }
+
+.ko-round-title {
+  margin: 18px 0 6px; font-size: 12px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-dim); font-weight: 600;
+}
+.ko-round-title:first-child { margin-top: 0; }
+
+table.manual-matches.ko-matches { table-layout: fixed; }
+table.manual-matches.ko-matches .cell-team { width: auto; }
+table.manual-matches.ko-matches tr { height: 42px; }
+table.manual-matches.ko-matches th.th-home,
+table.manual-matches.ko-matches td.cell-team.home { width: 25%; }
+table.manual-matches.ko-matches th.th-away,
+table.manual-matches.ko-matches td.cell-team.away { width: 25%; }
+table.manual-matches.ko-matches .cell-ko-extra {
+  width: 220px; white-space: nowrap; vertical-align: middle;
+}
+.ko-extra-inner {
+  display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;
+  min-height: 28px;
+}
+.ko-winner-pick {
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.ko-winner-pick .small { font-size: 11px; }
+.ko-winner-pick select {
+  background: var(--bg-3); color: var(--text); border: 1px solid var(--border);
+  border-radius: 3px; padding: 2px 4px; font-size: 11.5px; max-width: 110px;
+}
+.ko-winner-badge {
+  font-size: 11px; color: var(--accent); white-space: nowrap;
+}
+.ko-real-badge {
+  font-size: 10px; color: #7aa2f7; border: 1px solid rgba(122, 162, 247, 0.4);
+  border-radius: 3px; padding: 1px 5px; letter-spacing: 0.05em; white-space: nowrap;
+}
+
+.manual-section-note {
+  font-size: 12.5px; margin: 14px 0; padding: 10px 12px;
+  background: var(--bg-2); border: 1px dashed var(--border); border-radius: 4px;
+}
 
 input.score-input {
   width: 36px; padding: 4px 4px;
@@ -274,6 +317,7 @@ button.row-clear:hover { color: var(--danger); border-color: var(--danger); }
 .diff-section h3 { margin: 0 0 8px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
 .diff-table { font-size: 12.5px; }
 .diff-table th, .diff-table td { padding: 5px 8px; }
+
 .delta-up { color: var(--accent); font-family: var(--mono); }
 .delta-down { color: var(--danger); font-family: var(--mono); }
 .delta-zero { color: var(--text-dim); font-family: var(--mono); }
