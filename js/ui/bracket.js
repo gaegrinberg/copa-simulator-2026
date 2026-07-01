@@ -130,14 +130,14 @@
     const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -16 ${TOTAL_W} ${TOTAL_H + 60}" class="bracket-svg" preserveAspectRatio="xMidYMid meet">
         <style>
-          .phase-label { fill: #8b949e; font-size: 11px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-          .bx-bg { fill: #161b22; stroke: #2d333b; stroke-width: 1; rx: 4; }
-          .bx-label { fill: #8b949e; font-size: 9px; font-family: ui-monospace, monospace; }
-          .bx-team { fill: #c9d1d9; font-size: 11.5px; font-family: -apple-system, sans-serif; }
+          .phase-label { fill: #8b96a5; font-size: 11px; font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+          .bx-bg { fill: #12161f; stroke: #29303c; stroke-width: 1; rx: 4; }
+          .bx-label { fill: #8b96a5; font-size: 9px; font-family: ui-monospace, monospace; }
+          .bx-team { fill: #d7dee7; font-size: 11.5px; font-family: -apple-system, sans-serif; }
           .bx-team.likely { fill: #3fb950; font-weight: 600; }
-          .bx-prob { fill: #8b949e; font-size: 10px; font-family: ui-monospace, monospace; }
-          .bx-line { stroke: #30363d; stroke-width: 1.2; fill: none; }
-          .bx-special { fill: #1f2630; stroke: #d29922; stroke-width: 1.5; }
+          .bx-prob { fill: #8b96a5; font-size: 10px; font-family: ui-monospace, monospace; }
+          .bx-line { stroke: #29303c; stroke-width: 1.2; fill: none; }
+          .bx-special { fill: #1b212d; stroke: #d29922; stroke-width: 1.5; }
         </style>
         ${labelsHtml}
         ${lines.join("")}

@@ -151,6 +151,10 @@
     return result;
   }
 
+  // Exposto pra reuso na aba Resultados (results.js): com overrides={} devolve
+  // o bracket determinístico considerando só os resultados reais.
+  ManualUI.computeScenarioState = computeScenarioState;
+
   // -------------------------------------------------------------------------
   // Render
   // -------------------------------------------------------------------------

@@ -290,15 +290,18 @@
     // Combinações de top-8 3ºs (FIFA combo) mais comuns
     const fifaCombo = {};
 
-    // Por matchId do mata-mata: contagem de quem foi home, away, e quem venceu
-    // Estrutura: matchupCounts[matchId] = { home: {code:cnt}, away: {code:cnt}, winner: {code:cnt} }
+    // Por matchId do mata-mata: contagem de quem foi home, away, quem venceu,
+    // e o par conjunto (confronto específico casa|fora).
+    // Estrutura: matchupCounts[matchId] = { home: {code:cnt}, away: {code:cnt}, winner: {code:cnt}, pair: {"H|A":cnt} }
     const matchupCounts = {};
     function bumpMatch(matchId, home, away, winner) {
-      if (!matchupCounts[matchId]) matchupCounts[matchId] = { home: {}, away: {}, winner: {} };
+      if (!matchupCounts[matchId]) matchupCounts[matchId] = { home: {}, away: {}, winner: {}, pair: {} };
       const mc = matchupCounts[matchId];
       mc.home[home] = (mc.home[home] || 0) + 1;
       mc.away[away] = (mc.away[away] || 0) + 1;
       if (winner) mc.winner[winner] = (mc.winner[winner] || 0) + 1;
+      const pk = home + "|" + away;
+      mc.pair[pk] = (mc.pair[pk] || 0) + 1;
     }
 
     const reportEvery = Math.max(1, Math.floor(N / 100));

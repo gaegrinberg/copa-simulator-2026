@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Copa do Mundo 2026 — Simulador</title>
-<link rel="stylesheet" href="styles.css?v=19">
+<link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
 <header>
@@ -33,33 +33,39 @@
   <button class="tab active" role="tab" id="navtab-overview" aria-controls="tab-overview" aria-selected="true" tabindex="0" data-tab="overview">Visão geral</button>
   <button class="tab" role="tab" id="navtab-groups" aria-controls="tab-groups" aria-selected="false" tabindex="-1" data-tab="groups">Fase de grupos</button>
   <button class="tab" role="tab" id="navtab-bracket" aria-controls="tab-bracket" aria-selected="false" tabindex="-1" data-tab="bracket">Mata-mata</button>
+  <button class="tab" role="tab" id="navtab-matchups" aria-controls="tab-matchups" aria-selected="false" tabindex="-1" data-tab="matchups">Confrontos</button>
   <button class="tab" role="tab" id="navtab-team" aria-controls="tab-team" aria-selected="false" tabindex="-1" data-tab="team">Por seleção</button>
   <button class="tab" role="tab" id="navtab-manual" aria-controls="tab-manual" aria-selected="false" tabindex="-1" data-tab="manual">Simulação manual</button>
+  <button class="tab" role="tab" id="navtab-results" aria-controls="tab-results" aria-selected="false" tabindex="-1" data-tab="results">Resultados</button>
 </nav>
 
 <main>
   <section id="tab-overview" class="tab-content active" role="tabpanel" aria-labelledby="navtab-overview" tabindex="0"></section>
   <section id="tab-groups" class="tab-content" role="tabpanel" aria-labelledby="navtab-groups" tabindex="0"></section>
   <section id="tab-bracket" class="tab-content" role="tabpanel" aria-labelledby="navtab-bracket" tabindex="0"></section>
+  <section id="tab-matchups" class="tab-content" role="tabpanel" aria-labelledby="navtab-matchups" tabindex="0"></section>
   <section id="tab-team" class="tab-content" role="tabpanel" aria-labelledby="navtab-team" tabindex="0"></section>
   <section id="tab-manual" class="tab-content" role="tabpanel" aria-labelledby="navtab-manual" tabindex="0"></section>
+  <section id="tab-results" class="tab-content" role="tabpanel" aria-labelledby="navtab-results" tabindex="0"></section>
 </main>
 
 <footer>
   <span id="data-info"></span>
 </footer>
 
-<script src="data/data.js?v=19"></script>
-<script src="js/tournament.js?v=19"></script>
-<script src="js/model.js?v=19"></script>
-<script src="js/elo.js?v=19"></script>
-<script src="js/simulator.js?v=19"></script>
-<script src="js/ui/flags.js?v=19"></script>
-<script src="js/ui/overview.js?v=19"></script>
-<script src="js/ui/groups.js?v=19"></script>
-<script src="js/ui/bracket.js?v=19"></script>
-<script src="js/ui/team.js?v=19"></script>
-<script src="js/ui/manual.js?v=19"></script>
-<script src="js/main.js?v=19"></script>
+<script src="data/data.js?v=21"></script>
+<script src="js/tournament.js?v=21"></script>
+<script src="js/model.js?v=21"></script>
+<script src="js/elo.js?v=21"></script>
+<script src="js/simulator.js?v=21"></script>
+<script src="js/ui/flags.js?v=21"></script>
+<script src="js/ui/overview.js?v=21"></script>
+<script src="js/ui/groups.js?v=21"></script>
+<script src="js/ui/bracket.js?v=21"></script>
+<script src="js/ui/matchups.js?v=21"></script>
+<script src="js/ui/team.js?v=21"></script>
+<script src="js/ui/manual.js?v=21"></script>
+<script src="js/ui/results.js?v=21"></script>
+<script src="js/main.js?v=21"></script>
 </body>
 </html>

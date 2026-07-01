@@ -39,6 +39,9 @@
       App.state.nameByCode[t.code] = t.name_pt;
     }
 
+    // Resultados reais salvos no navegador (aba Resultados) viram played:true
+    applyLocalResults();
+
     setupTabs();
     setupControls();
     setupWorker();
@@ -86,7 +89,7 @@
 
   function setupWorker() {
     try {
-      App.worker = new Worker("js/worker.js?v=19");
+      App.worker = new Worker("js/worker.js?v=21");
       App.worker.onmessage = (e) => {
         const msg = e.data;
         if (msg.type === "progress") {
@@ -105,6 +108,35 @@
       console.warn("Sem Worker disponível, main thread fallback.", err);
       App.workerOK = false;
     }
+  }
+
+  // Mescla resultados reais salvos no localStorage (aba Resultados) em
+  // App.state.matches como jogos played:true com flag .local.
+  // Entradas redundantes (jogo já veio played do data.js) são ignoradas.
+  function applyLocalResults() {
+    const saved = ResultsUI.loadStore();
+    if (Object.keys(saved).length === 0) return;
+    App.state.matches = App.state.matches.map(m => {
+      const r = saved[m.id];
+      if (!r || m.played || typeof r.score_home !== "number" || typeof r.score_away !== "number") return m;
+      const upd = { ...m, played: true, score_home: r.score_home, score_away: r.score_away, local: true };
+      if (r.score_home === r.score_away && r.ko_winner) upd.ko_winner = r.ko_winner;
+      return upd;
+    });
+  }
+
+  // Reconstrói o estado a partir do data.js + localStorage (após salvar/remover
+  // resultado real) e descarta overrides de cenário que viraram jogos reais.
+  function rebuildStateMatches() {
+    App.state.matches = window.APP_DATA.matches.matches;
+    applyLocalResults();
+    const byId = {};
+    for (const m of App.state.matches) byId[m.id] = m;
+    for (const id of Object.keys(App.overrides)) {
+      if (byId[id] && byId[id].played) delete App.overrides[id];
+    }
+    if (Object.keys(App.overrides).length === 0) App.scenarioStats = null;
+    renderInfo();
   }
 
   function renderInfo() {
@@ -196,11 +228,13 @@
         // Matchups
         for (const id in sim.knockoutResults) {
           const r = sim.knockoutResults[id];
-          if (!tally.matchupCounts[id]) tally.matchupCounts[id] = { home: {}, away: {}, winner: {} };
+          if (!tally.matchupCounts[id]) tally.matchupCounts[id] = { home: {}, away: {}, winner: {}, pair: {} };
           const mc = tally.matchupCounts[id];
           mc.home[r.sim.home] = (mc.home[r.sim.home] || 0) + 1;
           mc.away[r.sim.away] = (mc.away[r.sim.away] || 0) + 1;
           if (r.winner) mc.winner[r.winner] = (mc.winner[r.winner] || 0) + 1;
+          const pk = r.sim.home + "|" + r.sim.away;
+          mc.pair[pk] = (mc.pair[pk] || 0) + 1;
         }
       }
       onProgress(i, N);
@@ -315,10 +349,23 @@
       overview: document.getElementById("tab-overview"),
       groups: document.getElementById("tab-groups"),
       bracket: document.getElementById("tab-bracket"),
+      matchups: document.getElementById("tab-matchups"),
       team: document.getElementById("tab-team"),
       manual: document.getElementById("tab-manual"),
+      results: document.getElementById("tab-results"),
     };
     updateScenarioBanner();
+
+    if (App.activeTab === "results") {
+      ResultsUI.render(App, containers.results, {
+        onChange: () => {
+          rebuildStateMatches();
+          renderActiveTab();      // mostra o novo estado imediatamente
+          runSimulation();        // re-roda baseline com os resultados reais
+        },
+      });
+      return;
+    }
 
     if (App.activeTab === "manual") {
       ManualUI.render(App, containers.manual, {
@@ -335,6 +382,7 @@
       overview: OverviewUI,
       groups: GroupsUI,
       bracket: BracketUI,
+      matchups: MatchupsUI,
       team: TeamUI,
     }[App.activeTab];
     if (renderer && containers[App.activeTab]) {
